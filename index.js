@@ -1,23 +1,33 @@
-const mongoose = require('mongoose');
+import express from "express";
+import * as dotenv from "dotenv";
+import connect from "./config/db.config.js";
+import roteador from "./routes/recipes.routes.js";
 
+//const express = require('express'); // importando express através do require
+
+//habilitar o servidor a ter variáveis de ambiente
+dotenv.config();
+
+//instanciando o express na variável app.
+const app = express();  
+
+//configurar o servidor para aceitar enviar e receber arquivos em JSON
+app.use(express.json()); 
+
+//conectando com o banco de dados
+connect();
+
+app.use("/recipe", roteador);
+
+//const mongoose = require('mongoose');
 // Import of the model Recipe from './models/Recipe.model.js'
-const Recipe = require('./models/Recipe.model');
+//const Recipe = require('./models/Recipe.model');
 // Import of the data from './data.json'
-const data = require('./data');
+//const data = require('./data');
 
-const MONGODB_URI = 'mongodb://localhost:27017/recipe-app';
 
-// Connection to the database "recipe-app"
-mongoose
-  .connect(MONGODB_URI)
-  .then(x => {
-    console.log(`Connected to the database: "${x.connection.name}"`);
-    // Before adding any recipes to the database, let's remove all existing ones
-    return Recipe.deleteMany()
-  })
-  .then(() => {
-    // Run your code here, after you have insured that the connection was made
-  })
-  .catch(error => {
-    console.error('Error connecting to the database', error);
-  });
+
+//por fim, colocar o servidor para "ouvir" os requests
+app.listen(Number(process.env.PORT), () => {
+  console.log(`Server up and running at port ${process.env.PORT}`);
+});
