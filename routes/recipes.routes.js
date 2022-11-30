@@ -51,4 +51,24 @@ roteador.put("/edit/:id", async (req, res) => {
 });
 
 
+//DELETE
+roteador.delete("/delete/:id", async (req, res) => {
+
+  try {
+    const { id } = req.params;
+    const deleteRecipe = await Recipe.findByIdAndDelete(id);
+
+    if (!deleteRecipe) return res.status(400).json({msg: "Receita não encontrada!"});
+
+    const recipes = await Recipe.find();
+
+    return res.status(200).json(recipes);
+
+  } catch (error) {
+    console.log(error.errors);
+    return res.status(500).json(error.errors);
+  }
+});
+
+
 export default roteador
