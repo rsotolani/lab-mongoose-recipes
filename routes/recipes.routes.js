@@ -1,5 +1,6 @@
 import express from "express";
 import Recipe from "../models/Recipe.model.js";
+import User from "../models/User.model.js";
 
 const recipeRoute = express.Router();
 
@@ -15,6 +16,39 @@ recipeRoute.post("/create", async (req, res) => {
       console.log(error.errors);
       return res.status(500).json(error.errors);
     }
+});
+
+//Criar uma receita
+recipeRoute.post("/create/:userId", async (req, res) => {
+
+  try {
+    const { userId } = req.params;
+
+    //criar a receita com o usuario
+    const newRecipe = await Recipe.create({
+      ...req.body,
+      user: userId
+    });
+
+    //atualizar o usuario agora para incluir a receita
+    const userUpdated = await User.
+      findByIdAndUpdate(
+        userId,
+        {
+          $push: { recipes: newRecipe._id}
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      );
+
+    return res.status(201).json(newRecipe);
+  } 
+  catch (error) {
+    console.log(error.errors);
+    return res.status(500).json(error.errors);
+  }
 });
 
 //Criar varias receitas
