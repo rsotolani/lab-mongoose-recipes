@@ -104,5 +104,16 @@ recipeRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
+//all-recipes
+recipeRoute.get("/all", async (req, res) => {
+  try {
+    const allRecipes = await Recipe.find({}).populate("user");
+
+    return res.status(200).json(allRecipes);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error.errors);
+  }
+});
 
 export default recipeRoute

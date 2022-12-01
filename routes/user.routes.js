@@ -84,9 +84,28 @@ userRoute.delete("/delete/:userId", async (req, res) => {
     }
 
     //deletar TODAS as receitas que o usuário é dono
-    await Recipe.deleteMany({ user: userId })
+    await Recipe.deleteMany({ user: userId });
 
-    return res.status(204);
+    return res.status(204).json();
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error.errors);
+  }
+});
+
+userRoute.get("/all", async (req, res) => {
+  try {
+
+    const users = await User.
+      find({}).
+        populate("recipes");
+    
+    if (!users) {
+      return res.status(400).json({ msg: " Usuários não encontrados!" });
+    }
+
+    return res.status(200).json(users);
+
   } catch (error) {
     console.log(error);
     return res.status(500).json(error.errors);
