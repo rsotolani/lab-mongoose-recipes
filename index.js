@@ -1,7 +1,9 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import connect from "./config/db.config.js";
-import roteador from "./routes/recipes.routes.js";
+import recipeRoute from "./routes/recipes.routes.js";
+import userRoute from "./routes/user.routes.js";
+
 
 //habilitar o servidor a ter variáveis de ambiente
 dotenv.config();
@@ -15,7 +17,8 @@ app.use(express.json());
 //conectando com o banco de dados
 connect();
 
-app.use("/recipe", roteador);
+app.use("/recipe", recipeRoute);
+app.use("/user", userRoute);
 
 
 

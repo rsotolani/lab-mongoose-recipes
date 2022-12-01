@@ -1,10 +1,10 @@
 import express from "express";
 import Recipe from "../models/Recipe.model.js";
 
-const roteador = express.Router();
+const recipeRoute = express.Router();
 
 //Criar uma receita
-roteador.post("/create", async (req, res) => {
+recipeRoute.post("/create", async (req, res) => {
 
     try {
       const form = req.body;
@@ -18,7 +18,7 @@ roteador.post("/create", async (req, res) => {
 });
 
 //Criar varias receitas
-roteador.post("/create-many", async (req, res) => {
+recipeRoute.post("/create-many", async (req, res) => {
 
   try {
     const form = req.body;
@@ -32,7 +32,7 @@ roteador.post("/create-many", async (req, res) => {
 });
 
 //EDIT
-roteador.put("/edit/:id", async (req, res) => {
+recipeRoute.put("/edit/:id", async (req, res) => {
 
   try {
     const { id } = req.params;
@@ -52,7 +52,7 @@ roteador.put("/edit/:id", async (req, res) => {
 
 
 //DELETE
-roteador.delete("/delete/:id", async (req, res) => {
+recipeRoute.delete("/delete/:id", async (req, res) => {
 
   try {
     const { id } = req.params;
@@ -71,4 +71,4 @@ roteador.delete("/delete/:id", async (req, res) => {
 });
 
 
-export default roteador
+export default recipeRoute
