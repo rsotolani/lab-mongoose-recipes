@@ -45,7 +45,27 @@ userRoute.get("/read/:userId", async (req, res) => {
   }
 });
 
+// 2.3 Crie a rota PUT /update/:userId
+// Esta rota irá receber o userId pelos parâmetros de rota para atualizar as informações do usuário e deve retornar uma response com os dados atualizados do usuário.
+// A rota deve:
+// Encontrar um usuário pelo _id e atualizar os campos que vieram na req.body
+// Retornar uma response em JSON incluindo o documento atualizado do usuário.
+userRoute.put("/update/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
 
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { ...req.body },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error.errors);
+  }
+})
 
 
 export default userRoute;
